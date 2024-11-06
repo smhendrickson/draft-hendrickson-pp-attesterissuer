@@ -120,7 +120,10 @@ same entity, as defined in section 4.3 of {{!RFC9576}}.
 ## Attester-to-Issuer Request {#request}
 
 The Attester and Issuer MUST use a mutually authenticated and secure HTTPS
-connection. They MAY use Mutual TLS for mutual aumutual authentication.
+connection. They MAY use Mutual TLS for mutual aumutual authentication. The
+"IssuerTokenRequest" defined below is written in TLS Presentation Layer (Second
+4 of {{!RFC8446}}), although the Attester and Issuer may instead choose to use
+another equivelent data interchange format such as JSON ({{!RFC8259}}).
 
    struct {
      uint16_t token_type;
@@ -145,6 +148,12 @@ message, and return it to the Attester. The signature is defined in Sections 5
 and 6 of {{!RFC9578}}, depending on the cryptography used.
 
 ## Issuer-to-Attester Response {#response}
+
+After signing the request, the issuer assembles and returns an
+"IssuerTokenResponse" to the attester.  The response should be sent in the same
+HTTPS connection as the request was delivered on.  Like the request, the
+response below is written in TLS Presentation Language, but any data interchange
+format is acceptable.
 
    struct {
      uint8_t blinded_signature[Ne];
