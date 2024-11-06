@@ -1326,7 +1326,10 @@ same entity, as defined in section 4.3 of <span>[<a href="#RFC9576" class="cite 
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-attester-to-issuer-request" class="section-name selfRef">Attester-to-Issuer Request</a>
         </h3>
 <p id="section-2.1-1">The Attester and Issuer <span class="bcp14">MUST</span> use a mutually authenticated and secure HTTPS
-connection. They <span class="bcp14">MAY</span> use Mutual TLS for mutual aumutual authentication.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+connection. They <span class="bcp14">MAY</span> use Mutual TLS for mutual aumutual authentication. The
+"IssuerTokenRequest" defined below is written in TLS Presentation Layer (Second
+4 of <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>), although the Attester and Issuer may instead choose to use
+another equivelent data interchange format such as JSON (<span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>).<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2">struct {
      uint16_t token_type;
      uint8_t token_key_id;
@@ -1363,13 +1366,18 @@ and 6 of <span>[<a href="#RFC9578" class="cite xref">RFC9578</a>]</span>, depend
         <h3 id="name-issuer-to-attester-response">
 <a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-issuer-to-attester-response" class="section-name selfRef">Issuer-to-Attester Response</a>
         </h3>
-<p id="section-2.3-1">struct {
+<p id="section-2.3-1">After signing the request, the issuer assembles and returns an
+"IssuerTokenResponse" to the attester.  The response should be sent in the same
+HTTPS connection as the request was delivered on.  Like the request, the
+response below is written in TLS Presentation Language, but any data interchange
+format is acceptable.<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<p id="section-2.3-2">struct {
      uint8_t blinded_signature[Ne];
-   } IssuerTokenResponse;<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">The structure fields are defined as follows:<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+   } IssuerTokenResponse;<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.3-3">The structure fields are defined as follows:<a href="#section-2.3-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.3-3.1">
-            <p id="section-2.3-3.1.1">"blinded_signature" is a Ne-octet blinded signature over "blinded_msg".<a href="#section-2.3-3.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-2.3-4.1">
+            <p id="section-2.3-4.1.1">"blinded_signature" is a Ne-octet blinded signature over "blinded_msg".<a href="#section-2.3-4.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1416,6 +1424,14 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
 <dt id="RFC8174">[RFC8174]</dt>
       <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8259">[RFC8259]</dt>
+      <dd>
+<span class="refAuthor">Bray, T., Ed.</span>, <span class="refTitle">"The JavaScript Object Notation (JSON) Data Interchange Format"</span>, <span class="seriesInfo">STD 90</span>, <span class="seriesInfo">RFC 8259</span>, <span class="seriesInfo">DOI 10.17487/RFC8259</span>, <time datetime="2017-12" class="refDate">December 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8259">https://www.rfc-editor.org/rfc/rfc8259</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+      <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9576">[RFC9576]</dt>
       <dd>
