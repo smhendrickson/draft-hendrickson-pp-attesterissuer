@@ -5,16 +5,7 @@ category: info
 
 docname: draft-hendrickson-pp-attesterissuer-latest
 submissiontype: IETF
-number:
-date:
-consensus: true
 v: 3
-# area: AREA
-# workgroup: WG Working Group
-keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
 venue:
 #  group: WG
 #  type: Working Group
