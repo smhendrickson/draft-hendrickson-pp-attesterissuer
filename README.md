@@ -2,7 +2,7 @@
 
 This is the working area for the individual Internet-Draft, "Attester Issuer Protocol".
 
-[Rate Limited Privacypass](https://www.ietf.org/archive/id/draft-ietf-privacypass-rate-limit-tokens-06.html) both defined the protocol between attesters and issuers as defined in [RFC9576](https://datatracker.ietf.org/doc/rfc9576/), as well as defined a rate limiting scheme that issuers could enforce.
+[Rate Limited Privacypass](https://www.ietf.org/archive/id/draft-ietf-privacypass-rate-limit-tokens-06.html) defined the protocol between attesters and issuers as defined in [RFC9576](https://datatracker.ietf.org/doc/rfc9576/) and defined a rate limiting scheme that issuers could enforce.
 
 While that draft is Expired and Archived, this draft attempts to extract just the Attester-Issuer interface from that draft and codify this protocol.
 
