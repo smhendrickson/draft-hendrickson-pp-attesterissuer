@@ -19,12 +19,12 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "Attester Issuer Protocol"
+abbrev: "Attester-Issuer"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
-submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+docname: draft-hendrickson-pp-attesterissuer-latest
+submissiontype: IETF
 number:
 date:
 consensus: true
@@ -40,14 +40,14 @@ venue:
   type: Working Group
   mail: WG@example.com
   arch: https://example.com/WG
-  github: USER/REPO
+  github: smhendrickson/draft-hendrickson-pp-attesterissuer
   latest: https://example.com/LATEST
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Scott Hendrickson
+    organization: Google
+    email: scott@shendrickson.com
 
 normative:
 
