@@ -1331,29 +1331,40 @@ same entity, as defined in section 4.3 of <span>[<a href="#RFC9576" class="cite 
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-attester-to-issuer-request" class="section-name selfRef">Attester-to-Issuer Request</a>
         </h3>
 <p id="section-2.1-1">The Attester and Issuer <span class="bcp14">MUST</span> use a mutually authenticated and secure HTTPS
-connection. They <span class="bcp14">MAY</span> use Mutual TLS for mutual aumutual authentication. The
-"IssuerTokenRequest" defined below is written in TLS Presentation Layer (Second
+connection. They <span class="bcp14">MAY</span> use Mutual TLS for mutual authentication. The
+"IssuerTokenRequest" defined below is written in TLS Presentation Layer (Section
 4 of <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>), although the Attester and Issuer may instead choose to use
 another equivelent data interchange format such as JSON (<span>[<a href="#RFC8259" class="cite xref">RFC8259</a>]</span>).<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">struct {
-     uint16_t token_type;
-     uint8_t token_key_id;
-     uint8_t blinded_msg[Ne];
-   } IssuerTokenRequest;<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<div class="lang-tls sourcecode" id="section-2.1-2">
+<pre>
+struct {
+   uint16_t token_type;
+   select (token_type) {
+      case (0x0001): /* Type VOPRF(P-384, SHA-384), RFC 9578 */
+         uint8_t truncated_token_key_id;
+         uint8_t blinded_msg[Ne];
+      case (0x0002): /* Type Blind RSA (2048-bit), RFC 9578 */
+         uint8_t truncated_token_key_id;
+         uint8_t blinded_msg[Nk];
+   }
+} IssuerTokenRequest;
+</pre><a href="#section-2.1-2" class="pilcrow">¶</a>
+</div>
 <p id="section-2.1-3">The structure fields are defined as follows:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-2.1-4.1">
-            <p id="section-2.1-4.1.1">"token_type" is a 2-octet integer, which matches the type in the
-challenge.<a href="#section-2.1-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-4.1.1">"token_type" is a 2-octet integer. TokenRequest <span class="bcp14">MUST</span> be prefixed with a uint16
+"token_type" indicating the token type.<a href="#section-2.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-2.1-4.2">
-            <p id="section-2.1-4.2.1">"token_key_id" which matches the type in the challenge.<a href="#section-2.1-4.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-2.1-4.3">
-            <p id="section-2.1-4.3.1">"blinded_msg" is the Ne-octet blinded message to be signed, which
-matches the challenge.<a href="#section-2.1-4.3.1" class="pilcrow">¶</a></p>
+            <p id="section-2.1-4.2.1">The rest of the structure after "token_type" is based on that type, within the
+inner opaque token_request attribute. The above definition corresponds to
+TokenRequest from <span>[<a href="#RFC9578" class="cite xref">RFC9578</a>]</span>. For TokenRequest not defined in <span>[<a href="#RFC9578" class="cite xref">RFC9578</a>]</span>, they
+<span class="bcp14">MAY</span> be used as long as they are prefixed with a 2-octet token_type.<a href="#section-2.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
+<p id="section-2.1-5">The Attester will encode the IssuerTokenRequest in the chosen interchange format,
+and send the IssuerTokenRequest to the issuer over the chosen connection.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="issuer-behavior">
@@ -1362,8 +1373,8 @@ matches the challenge.<a href="#section-2.1-4.3.1" class="pilcrow">¶</a></p>
 <a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-issuer-behavior" class="section-name selfRef">Issuer behavior</a>
         </h3>
 <p id="section-2.2-1">In the simplest case, the issuer will recieve the IssuerTokenRequest, sign the
-message, and return it to the Attester. The signature is defined in Sections 5
-and 6 of <span>[<a href="#RFC9578" class="cite xref">RFC9578</a>]</span>, depending on the cryptography used.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+message, and return it to the Attester. The signature may be defined by Sections 5
+or 6 of <span>[<a href="#RFC9578" class="cite xref">RFC9578</a>]</span>, depending on the token_type used.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="response">
