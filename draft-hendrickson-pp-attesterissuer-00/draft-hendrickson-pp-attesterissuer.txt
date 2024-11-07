@@ -1,0 +1,288 @@
+
+
+
+
+Network Working Group                                     S. Hendrickson
+Internet-Draft                                                    Google
+Intended status: Informational                                T. Meunier
+Expires: 11 May 2025                                     Cloudflare Inc.
+                                                         7 November 2024
+
+
+                        Attester Issuer Protocol
+               draft-hendrickson-pp-attesterissuer-latest
+
+Abstract
+
+   TODO Abstract
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://smhendrickson.github.io/draft-hendrickson-pp-attesterissuer/
+   draft-hendrickson-pp-attesterissuer.html.  Status information for
+   this document may be found at https://datatracker.ietf.org/doc/draft-
+   hendrickson-pp-attesterissuer/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/smhendrickson/draft-hendrickson-pp-attesterissuer.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 11 May 2025.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+     1.1.  Protocol Overview
+   2.  Attester Issuer Protocol
+     2.1.  Attester-to-Issuer Request
+     2.2.  Issuer behavior
+     2.3.  Issuer-to-Attester Response
+   3.  Conventions and Definitions
+   4.  Security Considerations
+   5.  IANA Considerations
+   6.  Normative References
+   Acknowledgments
+   Authors' Addresses
+
+1.  Introduction
+
+   This document specifies the protocol between the Attester and Issuer
+   as defined in [RFC9576].  This draft is intended for those deploying
+   the split Attester Issuer as defined in Section 4.4 of [RFC9576].
+
+   The base Privacy Pass issuance protocol [RFC9578] defines stateless
+   anonymous tokens, which can either be publicly verifiable or not.
+   This draft is agnostic to all cryptographic protocols and public/
+   private verifiability.
+
+   This draft defines the protocol that will occur behind the issuer as
+   defined in [RFC9577].
+
+1.1.  Protocol Overview
+
+   Figure 1 shows how this draft is only specifying a protocol between
+   the Attester and Issuer, and makes no changes to the protocols
+   between Attesters and Clients, or Attesters and Origins.
+
+                                                           +-----------+
+         Client                                            |   Origin  |
+           |                    Challenge                  |           |
+           <----------------------------------------------------+      |
+           |                                               |           |
+           |      +~~~~~~ defined in this draft ~~~~~~~+   |           |
+           |      |                                    |   |           |
+           |      |   +-------------+                  |   |           |
+           |      |   |   Attester  |                  |   |           |
+           |      |   |             |                  |   |           |
+           |      |   | Attest      |    +----------+  |   |           |
+           +----------------->      |    |  Issuer  |  |   |           |
+           |      |   |             |    |          |  |   |           |
+           |   TokenRequest         |    |          |  |   |           |
+           +----------------->      |    |          |  |   |           |
+           |      |   |             |    |          |  |   |           |
+           |      |   |       TokenRequest          |  |   |           |
+           |      |   |     +------------------->   |  |   |           |
+           |      |   |             |    |          |  |   |           |
+           |      |   |             |    |          |  |   |           |
+           |      |   |       TokenResponse         |  |   |           |
+           |      |   |     <-------------------+   |  |   |           |
+           |      |   |             |    |          |  |   |           |
+           |   TokenResponse        |    |          |  |   |           |
+           <-----------------+      |    |          |  |   |           |
+           |      |   |             |    |          |  |   |           |
+           |      |   +-------------+    +----------+  |   |           |
+           |      |                                    |   |           |
+           |      +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+   |           |
+           |                                               |           |
+           |                    Redeem                     |           |
+           +---------------------------------------------------->      |
+                                                           |           |
+                                                           +-----------+
+
+                    Figure 1: Issuance Protocol Overview
+
+2.  Attester Issuer Protocol
+
+   This section describes the Issuance protocol for an Attester to
+   request and receive a token from an Issuer.  This protocol occurs
+   entirely between Section 5.1 and 5.2 of [RFC9578] or Section 6.1 and
+   6.2 of [RFC9578].
+
+   1.  The Client sends a token request to the attester as defined in
+       Section 5.1 or 6.1 of [RFC9577].
+
+   2.  The Attester authenticates the client as defined in Section 3.5.1
+       of [RFC9576].
+
+   3.  The Attester sends an IssuerTokenRequest to the Issuer
+
+   4.  The Issuer signs the token, and returns an IssuerTokenResponse to
+       the Attester.
+
+   5.  The Attester parses the signature from the IssuerTokenResponse,
+       and sends the client a TokenResponse as defined in 5.2 or 6.2 of
+       [RFC9577].
+
+   6.  The client uses the TokenResponse to particpate in a redemption
+       protocol.
+
+   The Attester Issuer issuance protocol is designed such that the
+   Issuer learns only enough to satisfy issuance requirements, which can
+   be as simple as the token to sign.  Notably the Issuer should not
+   learn any information that may be uniquely identifying at the Origin,
+   especially if the Origin and Issuer are the same entity, as defined
+   in section 4.3 of [RFC9576].
+
+2.1.  Attester-to-Issuer Request
+
+   The Attester and Issuer MUST use a mutually authenticated and secure
+   HTTPS connection.  They MAY use Mutual TLS for mutual authentication.
+   The "IssuerTokenRequest" defined below is written in TLS Presentation
+   Layer (Section 4 of [RFC8446]), although the Attester and Issuer may
+   instead choose to use another equivelent data interchange format such
+   as JSON ([RFC8259]).
+
+   struct {
+      uint16_t token_type;
+      select (token_type) {
+         case (0x0001): /* Type VOPRF(P-384, SHA-384), RFC 9578 */
+            uint8_t truncated_token_key_id;
+            uint8_t blinded_msg[Ne];
+         case (0x0002): /* Type Blind RSA (2048-bit), RFC 9578 */
+            uint8_t truncated_token_key_id;
+            uint8_t blinded_msg[Nk];
+      }
+   } IssuerTokenRequest;
+
+   The structure fields are defined as follows:
+
+   *  "token_type" is a 2-octet integer.  TokenRequest MUST be prefixed
+      with a uint16 "token_type" indicating the token type.
+
+   *  The rest of the structure after "token_type" is based on that
+      type, within the inner opaque token_request attribute.  The above
+      definition corresponds to TokenRequest from [RFC9578].  For
+      TokenRequest not defined in [RFC9578], they MAY be used as long as
+      they are prefixed with a 2-octet token_type.
+
+   The Attester will encode the IssuerTokenRequest in the chosen
+   interchange format, and send the IssuerTokenRequest to the issuer
+   over the chosen connection.
+
+2.2.  Issuer behavior
+
+   In the simplest case, the issuer will recieve the IssuerTokenRequest,
+   sign the message, and return it to the Attester.  The signature may
+   be defined by Sections 5 or 6 of [RFC9578], depending on the
+   token_type used.
+
+2.3.  Issuer-to-Attester Response
+
+   After signing the request, the issuer assembles and returns an
+   "IssuerTokenResponse" to the attester.  The response should be sent
+   in the same HTTPS connection as the request was delivered on.  Like
+   the request, the response below is written in TLS Presentation
+   Language, but any data interchange format is acceptable.
+
+   struct { uint8_t blinded_signature[Ne]; } IssuerTokenResponse;
+
+   The structure fields are defined as follows:
+
+   *  "blinded_signature" is a Ne-octet blinded signature over
+      "blinded_msg".
+
+3.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+4.  Security Considerations
+
+   TODO Security
+
+5.  IANA Considerations
+
+   This document has no IANA actions.
+
+6.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/rfc/rfc8259>.
+
+   [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/rfc/rfc8446>.
+
+   [RFC9576]  Davidson, A., Iyengar, J., and C. A. Wood, "The Privacy
+              Pass Architecture", RFC 9576, DOI 10.17487/RFC9576, June
+              2024, <https://www.rfc-editor.org/rfc/rfc9576>.
+
+   [RFC9577]  Pauly, T., Valdez, S., and C. A. Wood, "The Privacy Pass
+              HTTP Authentication Scheme", RFC 9577,
+              DOI 10.17487/RFC9577, June 2024,
+              <https://www.rfc-editor.org/rfc/rfc9577>.
+
+   [RFC9578]  Celi, S., Davidson, A., Valdez, S., and C. A. Wood,
+              "Privacy Pass Issuance Protocols", RFC 9578,
+              DOI 10.17487/RFC9578, June 2024,
+              <https://www.rfc-editor.org/rfc/rfc9578>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Authors' Addresses
+
+   Scott Hendrickson
+   Google
+   Email: scott@shendrickson.com
+
+
+   Thibault Meunier
+   Cloudflare Inc.
+   Email: ot-ietf@thibault.uk
