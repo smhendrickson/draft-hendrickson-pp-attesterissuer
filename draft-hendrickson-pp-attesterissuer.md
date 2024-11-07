@@ -146,13 +146,12 @@ struct {
 The structure fields are defined as follows:
 
 - "token_type" is a 2-octet integer. TokenRequest MUST be prefixed with a uint16
-  "token_type" indicating the token type. The rest of the structure follows
-  based on that type, within the inner opaque token_request attribute. The above
-  definition corresponds to TokenRequest from {{RFC9578}}. For TokenRequest not
-  defined in {{RFC9578}}, they MAY be used as long as they are prefixed with a
-  2-octet token_type.
+  "token_type" indicating the token type.
 
-- "token" represents any required fields for the corresponding "token_type".
+- The rest of the structure after "token_type" is based on that type, within the
+inner opaque token_request attribute. The above definition corresponds to
+TokenRequest from {{RFC9578}}. For TokenRequest not defined in {{RFC9578}}, they
+MAY be used as long as they are prefixed with a 2-octet token_type.
 
 The Attester will encode the IssuerTokenRequest in the chosen interchange format,
 and send the IssuerTokenRequest to the issuer over the chosen connection.
