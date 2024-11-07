@@ -124,32 +124,37 @@ same entity, as defined in section 4.3 of {{!RFC9576}}.
 ## Attester-to-Issuer Request {#request}
 
 The Attester and Issuer MUST use a mutually authenticated and secure HTTPS
-connection. They MAY use Mutual TLS for mutual aumutual authentication. The
-"IssuerTokenRequest" defined below is written in TLS Presentation Layer (Second
+connection. They MAY use Mutual TLS for mutual authentication. The
+"IssuerTokenRequest" defined below is written in TLS Presentation Layer (Section
 4 of {{!RFC8446}}), although the Attester and Issuer may instead choose to use
 another equivelent data interchange format such as JSON ({{!RFC8259}}).
 
-   struct {
-     uint16_t token_type;
-     uint8_t token_key_id;
-     uint8_t blinded_msg[Ne];
-   } IssuerTokenRequest;
+~~~tls
+struct {
+   uint16_t token_type;
+   opaque token<0..2^16-1>;
+} IssuerTokenRequest;
+~~~
 
-   The structure fields are defined as follows:
+The structure fields are defined as follows:
 
-   *  "token_type" is a 2-octet integer, which matches the type in the
-      challenge.
+- "token_type" is a 2-octet integer. TokenRequest MUST be prefixed with a uint16
+  "token_type" indicating the token type. The rest of the structure follows
+  based on that type, within the inner opaque token_request attribute. The above
+  definition corresponds to TokenRequest from {{RFC9578}}. For TokenRequest not
+  defined in {{RFC9578}}, they MAY be used as long as they are prefixed with a
+  2-octet token_type.
 
-   *  "token_key_id" which matches the type in the challenge.
+- "token" represents any required fields for the corresponding "token_type".
 
-   *  "blinded_msg" is the Ne-octet blinded message to be signed, which
-      matches the challenge.
+The Attester will encode the IssuerTokenRequest in the chosen interchange format,
+and send the IssuerTokenRequest to the issuer over the chosen connection.
 
 ## Issuer behavior
 
 In the simplest case, the issuer will recieve the IssuerTokenRequest, sign the
-message, and return it to the Attester. The signature is defined in Sections 5
-and 6 of {{!RFC9578}}, depending on the cryptography used.
+message, and return it to the Attester. The signature may be defined by Sections 5
+or 6 of {{!RFC9578}}, depending on the token_type used.
 
 ## Issuer-to-Attester Response {#response}
 
