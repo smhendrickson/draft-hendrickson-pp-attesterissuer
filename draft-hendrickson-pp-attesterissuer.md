@@ -2,15 +2,11 @@
 title: "Attester Issuer Protocol"
 abbrev: "Attester-Issuer"
 category: info
-
 docname: draft-hendrickson-pp-attesterissuer-latest
 submissiontype: IETF
 v: 3
+
 venue:
-#  group: WG
-#  type: Working Group
-#  mail: WG@example.com
-#  arch: https://example.com/WG
   github: "smhendrickson/draft-hendrickson-pp-attesterissuer"
   latest: "https://smhendrickson.github.io/draft-hendrickson-pp-attesterissuer/draft-hendrickson-pp-attesterissuer.html"
 
