@@ -19,6 +19,10 @@ author:
     fullname: Scott Hendrickson
     organization: Google
     email: scott@shendrickson.com
+ -
+    fullname: Thibault Meunier
+    organization: Cloudflare Inc.
+    email: ot-ietf@thibault.uk
 
 normative:
 
@@ -59,7 +63,7 @@ Clients, or Attesters and Origins.
         |                    Challenge                  |           |
         <----------------------------------------------------+      |
         |                                               |           |
-        |      +~~~~~~~defined in this draft ~~~~~~~+   |           |
+        |      +~~~~~~ defined in this draft ~~~~~~~+   |           |
         |      |                                    |   |           |
         |      |   +-------------+                  |   |           |
         |      |   |   Attester  |                  |   |           |
