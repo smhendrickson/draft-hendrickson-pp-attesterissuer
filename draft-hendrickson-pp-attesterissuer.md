@@ -132,7 +132,14 @@ another equivelent data interchange format such as JSON ({{!RFC8259}}).
 ~~~tls
 struct {
    uint16_t token_type;
-   opaque token<0..2^16-1>;
+   select (token_type) {
+      case (0x0001): /* Type VOPRF(P-384, SHA-384), RFC 9578 */
+         uint8_t truncated_token_key_id;
+         uint8_t blinded_msg[Ne];
+      case (0x0002): /* Type Blind RSA (2048-bit), RFC 9578 */
+         uint8_t truncated_token_key_id;
+         uint8_t blinded_msg[Nk];
+   }
 } IssuerTokenRequest;
 ~~~
 
