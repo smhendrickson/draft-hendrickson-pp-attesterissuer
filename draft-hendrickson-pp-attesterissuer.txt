@@ -4,8 +4,9 @@
 
 Network Working Group                                     S. Hendrickson
 Internet-Draft                                                    Google
-Intended status: Informational                           6 November 2024
-Expires: 10 May 2025
+Intended status: Informational                                T. Meunier
+Expires: 11 May 2025                                     Cloudflare Inc.
+                                                         7 November 2024
 
 
                         Attester Issuer Protocol
@@ -43,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 10 May 2025.
+   This Internet-Draft will expire on 11 May 2025.
 
 Copyright Notice
 
@@ -72,7 +73,7 @@ Table of Contents
    5.  IANA Considerations
    6.  Normative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -99,7 +100,7 @@ Table of Contents
            |                    Challenge                  |           |
            <----------------------------------------------------+      |
            |                                               |           |
-           |      +~~~~~~~defined in this draft ~~~~~~~+   |           |
+           |      +~~~~~~ defined in this draft ~~~~~~~+   |           |
            |      |                                    |   |           |
            |      |   +-------------+                  |   |           |
            |      |   |   Attester  |                  |   |           |
@@ -261,8 +262,13 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
    Scott Hendrickson
    Google
    Email: scott@shendrickson.com
+
+
+   Thibault Meunier
+   Cloudflare Inc.
+   Email: ot-ietf@thibault.uk
