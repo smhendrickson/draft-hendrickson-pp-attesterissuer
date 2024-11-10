@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-07T01:14:01.231772+00:00",
+  "timestamp": "2024-11-10T01:18:20.258771+00:00",
   "repo": "smhendrickson/draft-hendrickson-pp-attesterissuer",
   "labels": [
     {
@@ -49,6 +49,255 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
-  "pulls": []
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDONLO-t86dYQou",
+      "title": "Attester verification of TokenRequest",
+      "url": "https://github.com/smhendrickson/draft-hendrickson-pp-attesterissuer/issues/1",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The draft does not mention if the Attester SHOULD verify the TokenRequest it receives from the client",
+      "createdAt": "2024-11-07T09:21:34Z",
+      "updatedAt": "2024-11-07T10:02:53Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "OWNER",
+          "body": "I can add a note on verifying that metadata is correct if it is present for the token type. What other verification are you considering?",
+          "createdAt": "2024-11-07T09:58:02Z",
+          "updatedAt": "2024-11-07T09:58:02Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "NONE",
+          "body": "The attester may want to validate the token key\r\nI the current state of the draft, it also needs to validate the full token request in order to generate an IssuerTokenRequest",
+          "createdAt": "2024-11-07T10:02:52Z",
+          "updatedAt": "2024-11-07T10:02:52Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "I_kwDONLO-t86dYRfK",
+      "title": "Consider not defining IssuerTokenRequest and IssuerTokenResponse",
+      "url": "https://github.com/smhendrickson/draft-hendrickson-pp-attesterissuer/issues/2",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The request the Attester sends to the Issuer is the same as the one it received from the client.\r\n\r\nI don't think it's required to redefine these types. As long as the Attester can attest the Client is authenticated, it can forward the request.\r\nIt may be required for #1 ",
+      "createdAt": "2024-11-07T09:23:10Z",
+      "updatedAt": "2024-11-07T16:37:38Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "OWNER",
+          "body": "I am worried about not defining the types due to spec misunderstanding. If the Attester forwards the request to the issuer including any OOB authentication mechanisms, it will break the split attester-issuer privacy claim. Maybe there is a middleground we can create, where the `IssuerTokenRequest`  defines the `token_type` and provides an opaque type to contain the rest of the data to be parsed by the issuer?\r\n\r\nThis is similar to what you have defined in the [batched spec](https://www.ietf.org/archive/id/draft-ietf-privacypass-batched-tokens-03.html#name-client-to-issuer-request-2).",
+          "createdAt": "2024-11-07T09:56:55Z",
+          "updatedAt": "2024-11-07T09:56:55Z"
+        },
+        {
+          "author": "thibmeu",
+          "authorAssociation": "NONE",
+          "body": "The OOB in the message is a good point.\r\n\r\nA similar wording as in the arbitrary batched token spec would work here as well",
+          "createdAt": "2024-11-07T10:04:45Z",
+          "updatedAt": "2024-11-07T10:04:45Z"
+        },
+        {
+          "author": "smhendrickson",
+          "authorAssociation": "OWNER",
+          "body": "Have a look at https://github.com/smhendrickson/draft-hendrickson-pp-attesterissuer/pull/3 when you can.",
+          "createdAt": "2024-11-07T16:37:36Z",
+          "updatedAt": "2024-11-07T16:37:36Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "I_kwDONLO-t86dc5i6",
+      "title": "`Content-Type` on request and response to Issuer",
+      "url": "https://github.com/smhendrickson/draft-hendrickson-pp-attesterissuer/issues/4",
+      "state": "OPEN",
+      "author": "thibmeu",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Content-Type header should be sent from Attester to the Issuer.\r\n\r\nIt should match the token_type",
+      "createdAt": "2024-11-07T16:45:04Z",
+      "updatedAt": "2024-11-07T16:45:04Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 3,
+      "id": "PR_kwDONLO-t86BNp5o",
+      "title": "Define tokens with opaque",
+      "url": "https://github.com/smhendrickson/draft-hendrickson-pp-attesterissuer/pull/3",
+      "state": "MERGED",
+      "author": "smhendrickson",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "#2",
+      "createdAt": "2024-11-07T16:36:09Z",
+      "updatedAt": "2024-11-07T17:24:22Z",
+      "baseRepository": "smhendrickson/draft-hendrickson-pp-attesterissuer",
+      "baseRefName": "main",
+      "baseRefOid": "1efe82749873dc508e3cc48c58828778ce7eab73",
+      "headRepository": "smhendrickson/draft-hendrickson-pp-attesterissuer",
+      "headRefName": "flexible-tokens",
+      "headRefOid": "7711f3048ac7634d7e645d505f423edf142d1e5d",
+      "closedAt": "2024-11-07T17:24:21Z",
+      "mergedAt": "2024-11-07T17:24:21Z",
+      "mergedBy": "smhendrickson",
+      "mergeCommit": {
+        "oid": "abdda0cf30f26c820a2c639af652fc6925dcffa5"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONLO-t86QVfxe",
+          "commit": {
+            "abbreviatedOid": "828ddef"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-07T16:42:28Z",
+          "updatedAt": "2024-11-07T16:43:34Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "This could be unclear. You don't want to repeat the token_type, and opaque will require a length prefix\r\n\r\nDraft batched tokens uses select to handle this\r\nhttps://github.com/ietf-wg-privacypass/ietf-draft-privacypass-batched-tokens/blob/main/draft-ietf-privacypass-batched-tokens.md?plain=1#L379\r\n",
+              "createdAt": "2024-11-07T16:42:29Z",
+              "updatedAt": "2024-11-07T16:43:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONLO-t86QVoDO",
+          "commit": {
+            "abbreviatedOid": "828ddef"
+          },
+          "author": "smhendrickson",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-07T16:51:09Z",
+          "updatedAt": "2024-11-07T16:51:09Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "I was hoping to avoid needing to update this if we add more token types, but I agree. I will move to the same select.",
+              "createdAt": "2024-11-07T16:51:09Z",
+              "updatedAt": "2024-11-07T16:51:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONLO-t86QVpvu",
+          "commit": {
+            "abbreviatedOid": "828ddef"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-07T16:53:55Z",
+          "updatedAt": "2024-11-07T16:53:55Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "The wording in batch token allows for future updates as long as the TokenRequest is prefixed with a token_type\r\n\r\nThe only thing that's not going to work is Attester to Issuer arbitrary batch (as defined) ",
+              "createdAt": "2024-11-07T16:53:55Z",
+              "updatedAt": "2024-11-07T16:53:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONLO-t86QVqhh",
+          "commit": {
+            "abbreviatedOid": "828ddef"
+          },
+          "author": "smhendrickson",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-07T16:55:14Z",
+          "updatedAt": "2024-11-07T16:55:15Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "Updated",
+              "createdAt": "2024-11-07T16:55:14Z",
+              "updatedAt": "2024-11-07T16:55:15Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONLO-t86QVsvR",
+          "commit": {
+            "abbreviatedOid": "e051734"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-07T16:58:59Z",
+          "updatedAt": "2024-11-07T16:58:59Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "```suggestion\r\n- \"token\" represents\r\nthe rest of the TokenRequest, and follows\r\n  based on that type, within the inner opaque token_request attribute. The above\r\n  definition corresponds to TokenRequest from {{RFC9578}}. For TokenRequest not\r\n  defined in {{RFC9578}}, they MAY be used as long as they are prefixed with a\r\n  2-octet token_type.\r\n```\r\n\r\nMaybe something along this",
+              "createdAt": "2024-11-07T16:58:59Z",
+              "updatedAt": "2024-11-07T16:59:00Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONLO-t86QVuvA",
+          "commit": {
+            "abbreviatedOid": "e051734"
+          },
+          "author": "smhendrickson",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-07T17:02:30Z",
+          "updatedAt": "2024-11-07T17:02:30Z",
+          "comments": [
+            {
+              "originalPosition": 43,
+              "body": "Updated again. Made a minor tweak to your suggestion.",
+              "createdAt": "2024-11-07T17:02:30Z",
+              "updatedAt": "2024-11-07T17:02:30Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONLO-t86QVvQY",
+          "commit": {
+            "abbreviatedOid": "7711f30"
+          },
+          "author": "thibmeu",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-07T17:03:27Z",
+          "updatedAt": "2024-11-07T17:03:27Z",
+          "comments": []
+        }
+      ]
+    }
+  ]
 }
